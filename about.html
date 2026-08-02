@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Nexra Security</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0a0a0b;
+    --void-2:#131113;
+    --void-3:#19161a;
+    --paper:#f2ede6;
+    --white:#ffffff;
+    --maroon:#5c0f1a;
+    --maroon-2:#7a1522;
+    --blood:#c22a3a;
+    --blood-bright:#e6394a;
+    --ash:#948f8a;
+    --ash-dark:#5b5650;
+    --line:rgba(245,243,240,0.12);
+    --line-dark:rgba(20,17,18,0.12);
+    --display:'Big Shoulders Display', sans-serif;
+    --body:'Inter', sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--paper);
+    font-family:var(--body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--blood); color:var(--white); }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  h1,h2,h3,h4{font-family:var(--display); font-weight:800; letter-spacing:-0.01em; line-height:0.98; text-transform:uppercase;}
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--blood-bright); display:flex; align-items:center; gap:10px; margin-bottom:18px;
+  }
+  .eyebrow::before{content:''; width:7px; height:7px; background:var(--blood-bright); display:inline-block; border-radius:1px;}
+  :focus-visible{ outline:2px solid var(--blood-bright); outline-offset:3px; }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;} }
+
+  /* ===== Scroll progress ===== */
+  .scroll-progress{
+    position:fixed; top:0; left:0; height:3px; width:0%; z-index:999;
+    background:linear-gradient(90deg, var(--maroon), var(--blood-bright));
+    box-shadow:0 0 12px rgba(230,57,74,0.6);
+    transition:width .08s linear;
+  }
+
+  /* ===== Announcement bar ===== */
+  .announce{
+    background:var(--maroon); color:var(--paper); font-family:var(--mono); font-size:12px;
+    text-align:center; padding:9px 16px; letter-spacing:0.02em; border-bottom:1px solid rgba(0,0,0,0.2);
+  }
+  .announce b{color:var(--white); font-weight:600;}
+  .announce .dot{ opacity:.5; margin:0 8px;}
+
+  /* ===== Header ===== */
+  header{
+    position:sticky; top:0; z-index:100; background:rgba(10,10,11,0.88); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 32px; max-width:1180px; margin:0 auto;}
+  .logo{ font-family:var(--display); font-size:24px; font-weight:900; text-transform:uppercase; letter-spacing:0.01em; display:flex; align-items:center; gap:9px;}
+  .logo .mark{width:10px; height:22px; background:var(--blood-bright); display:inline-block; transform:skewX(-12deg);}
+  .navlinks{ display:flex; gap:22px; font-size:14px; font-weight:500; color:var(--ash);}
+  .navlinks a{ position:relative; padding-bottom:4px; transition:color .2s ease;}
+  .navlinks a::after{ content:''; position:absolute; left:0; right:100%; bottom:0; height:1px; background:var(--blood-bright); transition:right .28s ease;}
+  .navlinks a:hover{color:var(--paper);}
+  .navlinks a:hover::after{ right:0; }
+  .navctas{ display:flex; gap:12px; align-items:center;}
+
+  .navmenu-toggle{ display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:8px;}
+  .navmenu-toggle span{ width:22px; height:2px; background:var(--paper); display:block; transition:transform .3s ease, opacity .3s ease;}
+  .navmenu-toggle.open span:nth-child(1){ transform:translateY(7px) rotate(45deg);}
+  .navmenu-toggle.open span:nth-child(2){ opacity:0;}
+  .navmenu-toggle.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg);}
+
+  .mobile-panel{ max-height:0; overflow:hidden; background:var(--void-2); border-bottom:1px solid transparent; transition:max-height .4s ease, border-color .4s ease;}
+  .mobile-panel.open{ max-height:420px; border-color:var(--line);}
+  .mobile-panel-inner{ display:flex; flex-direction:column; padding:6px 32px 22px;}
+  .mobile-panel a.mp-link{ padding:14px 0; font-size:15px; color:var(--paper); border-bottom:1px solid var(--line);}
+  .mobile-panel .mp-ctas{ display:flex; gap:10px; margin-top:18px;}
+
+  .btn{
+    font-family:var(--mono); font-size:13px; font-weight:500; letter-spacing:0.02em; text-transform:uppercase;
+    padding:11px 20px; border-radius:2px; cursor:pointer; border:1px solid transparent; display:inline-flex; align-items:center; gap:8px;
+    transition:transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease; white-space:nowrap;
+  }
+  .btn-primary, .btn-ghost{ position:relative; overflow:hidden; }
+  .btn-primary::after, .btn-ghost::after{
+    content:''; position:absolute; top:0; left:-60%; width:40%; height:100%;
+    background:linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform:skewX(-20deg); transition:left .6s ease; pointer-events:none;
+  }
+  .btn-primary:hover::after, .btn-ghost:hover::after{ left:130%; }
+  .btn-primary{ background:var(--blood-bright); color:var(--void); border-color:var(--blood-bright);}
+  .btn-primary:hover{ background:var(--white); border-color:var(--white); transform:translateY(-2px); box-shadow:0 10px 24px -10px rgba(230,57,74,0.5);}
+  .btn-ghost{ background:transparent; color:var(--paper); border-color:var(--line);}
+  .btn-ghost:hover{ border-color:var(--paper); transform:translateY(-2px);}
+  .btn-line{ background:transparent; color:var(--blood-bright); border:none; padding:0; text-underline-offset:4px;}
+  .btn-line:hover{ text-decoration:underline; }
+
+  /* ===== Hero ===== */
+  .hero{ padding:88px 0 60px; position:relative; overflow:hidden;}
+  .scan-beam{
+    position:absolute; inset:0; pointer-events:none; z-index:0;
+    background:linear-gradient(to bottom, transparent 0%, rgba(230,57,74,0.09) 48%, transparent 100%);
+    background-size:100% 340%;
+    animation:scan-sweep 9s linear infinite;
+  }
+  @keyframes scan-sweep{ 0%{background-position:0 -120%;} 100%{background-position:0 220%;} }
+  .spotlight{
+    position:absolute; inset:0; pointer-events:none; z-index:0;
+    background:radial-gradient(circle at var(--x,50%) var(--y,20%), rgba(230,57,74,0.10), transparent 40%);
+    transition:background .1s ease;
+  }
+  .hero-grid{ display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center; position:relative; z-index:1;}
+  .hero h1{ font-size:clamp(42px,6vw,74px); margin-bottom:22px;}
+  .hero h1 .accent{ color:var(--blood-bright); }
+  .subhead{ font-family:var(--mono); font-size:15px; color:var(--ash); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:20px;}
+  .hero p.lede{ font-size:17px; color:#cfc9c1; max-width:520px; margin-bottom:26px;}
+  .hero-bullets{ list-style:none; display:flex; flex-direction:column; gap:11px; margin-bottom:34px;}
+  .hero-bullets li{ font-size:14.5px; color:#d8d2c9; display:flex; gap:11px; align-items:flex-start;}
+  .hero-bullets li::before{ content:'▸'; color:var(--blood-bright); font-size:13px; margin-top:1px;}
+  .hero-ctas{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-bottom:26px;}
+  .trustline{ font-family:var(--mono); font-size:12px; color:var(--ash); letter-spacing:0.02em;}
+
+  /* ---- Hero load-in stagger ---- */
+  .hload{ opacity:0; transform:translateY(18px); transition:opacity .7s cubic-bezier(.16,.8,.24,1), transform .7s cubic-bezier(.16,.8,.24,1);}
+  .hload.in{ opacity:1; transform:translateY(0);}
+
+  /* ---- Terminal signature ---- */
+  .term{
+    background:var(--void-2); border:1px solid var(--line); border-radius:6px; overflow:hidden;
+    box-shadow:0 40px 90px -30px rgba(0,0,0,0.7), 0 0 0 1px rgba(194,42,58,0.08);
+  }
+  .term-bar{
+    display:flex; align-items:center; gap:8px; padding:12px 16px; background:var(--void-3); border-bottom:1px solid var(--line);
+  }
+  .term-dot{width:10px; height:10px; border-radius:50%;}
+  .term-dot.r{background:#b8202f;} .term-dot.y{background:#5b5650;} .term-dot.g{background:#3a3733;}
+  .term-title{ font-family:var(--mono); font-size:11.5px; color:var(--ash); margin-left:8px; letter-spacing:0.04em;}
+  .term-status{ margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--blood-bright); display:flex; align-items:center; gap:6px; text-transform:uppercase; letter-spacing:0.05em;}
+  .term-status .dot{ width:6px; height:6px; border-radius:50%; background:var(--blood-bright); animation:pulse 1.2s ease-in-out infinite;}
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.25;} }
+  .term-status.done{ color:#8fae8a; }
+  .term-status.done .dot{ background:#8fae8a; animation:none; }
+  .term-body{ font-family:var(--mono); font-size:13px; padding:22px 22px 26px; min-height:340px; color:#c9c3ba;}
+  .term-line{ margin-bottom:9px; opacity:0; animation:fadein .3s forwards; white-space:pre-wrap;}
+  @keyframes fadein{ to{opacity:1;} }
+  .term-prompt{ color:var(--ash);}
+  .term-ok{ color:#8fae8a;}
+  .term-crit{ color:var(--blood-bright); font-weight:600;}
+  .term-warn{ color:#c9a24a;}
+  .term-cursor{ display:inline-block; width:7px; height:14px; background:var(--blood-bright); vertical-align:middle; margin-left:2px; animation:blink 1s step-end infinite;}
+  @keyframes blink{ 50%{opacity:0;} }
+
+  /* ===== Stats ===== */
+  .stats{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:44px 0; }
+  .stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; text-align:center;}
+  .stat-num{ font-family:var(--display); font-size:clamp(38px,5vw,56px); font-weight:900; color:var(--blood-bright); font-variant-numeric:tabular-nums;}
+  .stat-label{ font-family:var(--mono); font-size:12px; color:var(--ash); text-transform:uppercase; letter-spacing:0.05em; margin-top:6px;}
+
+  /* ===== Section shared ===== */
+  section{ padding:104px 0; }
+  .sec-head{ max-width:640px; margin-bottom:64px; }
+  .sec-head h2{ font-size:clamp(32px,4.4vw,50px); margin-bottom:16px;}
+  .sec-head p{ color:var(--ash); font-size:16px; max-width:560px; }
+  .light{ background:var(--paper); color:var(--void); }
+  .light .ash-text{ color:var(--ash-dark); }
+  .light .eyebrow{ color:var(--maroon-2); }
+  .light .eyebrow::before{ background:var(--maroon-2); }
+
+  /* ===== Pillars (layered stack) ===== */
+  .layers{ display:flex; flex-direction:column; gap:2px; }
+  .layer{
+    display:grid; grid-template-columns:120px 1fr 1.15fr; gap:36px; align-items:start;
+    padding:38px 0; border-top:1px solid var(--line); position:relative;
+    transition:padding-left .35s ease, background-color .35s ease;
+  }
+  .layer:last-child{ border-bottom:1px solid var(--line); }
+  .layer::before{ content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--blood-bright); transform:scaleY(0); transform-origin:top center; transition:transform .4s ease;}
+  .layer:hover{ padding-left:22px; background-color:rgba(230,57,74,0.03);}
+  .layer:hover::before{ transform:scaleY(1); }
+  .layer-index{ font-family:var(--mono); font-size:13px; color:var(--ash); padding-top:4px;}
+  .layer-index span{ display:block; font-family:var(--display); font-size:32px; color:var(--blood-bright); font-weight:800; line-height:1;}
+  .layer h3{ font-size:26px; text-transform:none; letter-spacing:0; font-weight:700; margin-bottom:10px; color:var(--white);}
+  .layer p.desc{ color:#bdb7ae; font-size:14.5px; margin-bottom:16px; max-width:400px;}
+  .chiplist{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    font-family:var(--mono); font-size:11.5px; color:var(--ash); border:1px solid var(--line); padding:6px 11px; border-radius:20px;
+    transition:border-color .25s ease, color .25s ease, background .25s ease;
+  }
+  .chip:hover{ border-color:var(--blood-bright); color:var(--paper); background:rgba(230,57,74,0.09);}
+
+  /* ===== Problem / Solution ===== */
+  .ps-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line-dark); border:1px solid var(--line-dark); }
+  .ps-card{ background:var(--paper); padding:34px 30px; transition:transform .35s ease, box-shadow .35s ease;}
+  .ps-card:hover{ transform:translateY(-4px); box-shadow:0 20px 40px -22px rgba(0,0,0,0.3); position:relative; z-index:1;}
+  .ps-card:nth-child(1){transition-delay:0s;} .ps-card:nth-child(2){transition-delay:.1s;} .ps-card:nth-child(3){transition-delay:.2s;}
+  .ps-tag{ font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;}
+  .ps-problem .ps-tag{ color:var(--maroon-2); }
+  .ps-solution{ background:var(--void); }
+  .ps-solution:hover{ box-shadow:0 20px 40px -22px rgba(0,0,0,0.6);}
+  .ps-solution .ps-tag{ color:var(--blood-bright); }
+  .ps-card h4{ font-size:17px; text-transform:none; letter-spacing:0; font-weight:700; margin-bottom:10px; }
+  .ps-card p{ font-size:14px; }
+  .ps-solution p, .ps-solution h4{ color:var(--paper); }
+  .ps-card.ps-solution p{ color:#cfc9c1; }
+  .ps-problem p{ color:var(--ash-dark); }
+
+  /* ===== Compliance ===== */
+  .compliance-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:40px;}
+  .comp-card{
+    background:var(--void-2); padding:28px 22px; min-height:170px; display:flex; flex-direction:column; justify-content:space-between;
+    transition:transform .35s ease, box-shadow .35s ease, background .35s ease;
+  }
+  .comp-card:hover{ transform:translateY(-6px); background:#1c181b; box-shadow:inset 0 2px 0 var(--blood-bright), 0 24px 44px -22px rgba(0,0,0,0.6); position:relative; z-index:1;}
+  .comp-card:nth-child(1){transition-delay:0s;} .comp-card:nth-child(2){transition-delay:.08s;} .comp-card:nth-child(3){transition-delay:.16s;} .comp-card:nth-child(4){transition-delay:.24s;} .comp-card:nth-child(5){transition-delay:.32s;}
+  .comp-card h4{ font-family:var(--mono); font-size:14px; color:var(--blood-bright); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:14px;}
+  .comp-card p{ font-size:13px; color:var(--ash); }
+  .supporting{ font-size:15px; color:#cfc9c1; max-width:640px; }
+
+  /* ===== Industry strip ===== */
+  .industry-marquee{ overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:26px 0; margin:48px 0;}
+  .industry-track{ display:flex; gap:14px; width:max-content; animation:scroll-left 38s linear infinite;}
+  .industry-marquee:hover .industry-track{ animation-play-state:paused; }
+  @keyframes scroll-left{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+  .ind-pill{ font-family:var(--mono); font-size:13px; padding:10px 20px; border:1px solid var(--line); border-radius:24px; color:var(--paper); white-space:nowrap; transition:border-color .2s ease, color .2s ease;}
+  .ind-pill:hover{ border-color:var(--blood-bright); color:var(--blood-bright); }
+  .ind-pill:nth-child(4n+1){ border-color:var(--blood); color:var(--blood-bright); }
+
+  /* ===== Use cases ===== */
+  .uc-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line-dark); border:1px solid var(--line-dark);}
+  .uc-card{
+    background:var(--paper); padding:32px 28px; min-height:190px; display:flex; flex-direction:column; gap:12px;
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  .uc-card:hover{ transform:translateY(-6px); box-shadow:0 24px 44px -22px rgba(0,0,0,0.25); position:relative; z-index:1;}
+  .uc-card:nth-child(1){transition-delay:0s;} .uc-card:nth-child(2){transition-delay:.08s;} .uc-card:nth-child(3){transition-delay:.16s;} .uc-card:nth-child(4){transition-delay:.24s;} .uc-card:nth-child(5){transition-delay:.32s;} .uc-card:nth-child(6){transition-delay:.4s;}
+  .uc-num{ font-family:var(--mono); font-size:12px; color:var(--maroon-2); }
+  .uc-card h4{ font-size:18px; text-transform:none; letter-spacing:0; font-weight:700; color:var(--void);}
+  .uc-card p{ font-size:13.5px; color:var(--ash-dark); }
+
+  /* ===== AI / Automation split ===== */
+  .split{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line);}
+  .split-panel{ background:var(--void-2); padding:52px 44px; transition:background .35s ease;}
+  .split-panel:hover{ background:#18151a; }
+  .split-panel h3{ font-size:28px; text-transform:none; letter-spacing:0; font-weight:700; margin-bottom:16px; color:var(--white); max-width:340px;}
+  .split-panel p{ font-size:14.5px; color:#bdb7ae; margin-bottom:24px; max-width:400px;}
+  .feature-list{ list-style:none; display:flex; flex-direction:column; gap:10px;}
+  .feature-list li{ font-family:var(--mono); font-size:13px; color:var(--ash); display:flex; gap:10px; align-items:flex-start; transition:color .2s ease, transform .2s ease;}
+  .feature-list li:hover{ color:var(--paper); transform:translateX(4px); }
+  .feature-list li::before{ content:'—'; color:var(--blood-bright);}
+  .footnote{ margin-top:24px; font-size:13px; color:var(--blood-bright); font-style:normal; font-family:var(--mono);}
+
+  /* ===== Team ===== */
+  .team-wrap{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:60px; align-items:center;}
+  .team-copy p{ color:#cfc9c1; font-size:16px; margin-bottom:28px; max-width:460px;}
+  .team-benefits{ list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:14px 20px;}
+  .team-benefits li{ font-size:13.5px; color:var(--paper); display:flex; gap:10px; padding:12px 0; border-top:1px solid var(--line); transition:padding-left .25s ease;}
+  .team-benefits li:hover{ padding-left:6px; }
+  .team-benefits li::before{ content:'✓'; color:var(--blood-bright); font-weight:700;}
+  .team-card{ background:var(--void-2); border:1px solid var(--line); padding:40px; position:relative; transition:border-color .3s ease, box-shadow .3s ease;}
+  .team-card:hover{ border-color:rgba(230,57,74,0.4); box-shadow:0 30px 60px -30px rgba(0,0,0,0.6);}
+  .team-card::before{ content:'CEH · OSCP'; position:absolute; top:-1px; right:-1px; background:var(--blood-bright); color:var(--void); font-family:var(--mono); font-size:11px; padding:6px 12px; letter-spacing:0.05em;}
+  .team-card h4{ font-size:22px; text-transform:none; letter-spacing:0; font-weight:700; margin-bottom:12px;}
+  .team-card p{ font-size:14px; color:var(--ash); }
+
+  /* ===== Trust ===== */
+  .trust-row{ display:flex; flex-wrap:wrap; gap:14px; margin-top:36px;}
+  .trust-badge{ font-family:var(--mono); font-size:12px; color:var(--ash-dark); border:1px solid var(--line-dark); padding:9px 16px; border-radius:2px; transition:border-color .2s ease, color .2s ease;}
+  .trust-badge:hover{ border-color:var(--maroon-2); color:var(--maroon-2); }
+
+  /* ===== CTA banner ===== */
+  .cta-banner{
+    background:linear-gradient(135deg, var(--maroon) 0%, #3a0a10 100%);
+    padding:96px 0; text-align:center; position:relative; overflow:hidden;
+  }
+  .cta-banner::after{
+    content:''; position:absolute; inset:0; opacity:0.5;
+    background-image:linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size:38px 38px;
+  }
+  .cta-banner::before{
+    content:''; position:absolute; inset:0; z-index:0;
+    background:radial-gradient(circle, rgba(255,255,255,0.08), transparent 60%);
+    animation:pulse-glow 4s ease-in-out infinite;
+  }
+  @keyframes pulse-glow{ 0%,100%{opacity:0.5;} 50%{opacity:1;} }
+  .cta-inner{ position:relative; z-index:1; max-width:640px; margin:0 auto;}
+  .cta-banner h2{ font-size:clamp(34px,5vw,56px); color:var(--white); margin-bottom:18px;}
+  .cta-banner p{ color:#e9d9d9; font-size:16px; margin-bottom:34px;}
+  .cta-btns{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:20px;}
+  .cta-banner .btn-ghost{ border-color:rgba(255,255,255,0.35); color:var(--white);}
+  .cta-banner .btn-primary{ background:var(--void); color:var(--white); border-color:var(--void);}
+  .cta-banner .btn-primary:hover{ background:var(--white); color:var(--void); }
+  .cta-fine{ font-family:var(--mono); font-size:12px; color:#d8b9bb;}
+
+  /* ===== Footer ===== */
+  footer{ background:var(--void); border-top:1px solid var(--line); padding:64px 0 32px;}
+  .footer-grid{ display:grid; grid-template-columns:1.3fr repeat(6,1fr); gap:26px; margin-bottom:56px;}
+  .footer-brand .logo{ margin-bottom:14px;}
+  .footer-brand p{ color:var(--ash); font-size:13.5px; max-width:230px;}
+  .fcol h5{ font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ash); margin-bottom:16px;}
+  .fcol ul{ list-style:none; display:flex; flex-direction:column; gap:10px;}
+  .fcol a{ font-size:13.5px; color:#cfc9c1; position:relative; transition:color .2s ease, padding-left .2s ease;}
+  .fcol a:hover{ color:var(--blood-bright); padding-left:5px; }
+  .footer-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:28px; border-top:1px solid var(--line); font-family:var(--mono); font-size:12px; color:var(--ash); flex-wrap:wrap; gap:12px;}
+
+  /* ===== Reveal on scroll ===== */
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ===== Responsive ===== */
+  @media (max-width:900px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .stats-grid{ grid-template-columns:repeat(2,1fr); gap:32px;}
+    .layer{ grid-template-columns:1fr; gap:14px; }
+    .ps-grid, .uc-grid{ grid-template-columns:1fr; }
+    .compliance-grid{ grid-template-columns:repeat(2,1fr);}
+    .split{ grid-template-columns:1fr; }
+    .team-wrap{ grid-template-columns:1fr; }
+    .footer-grid{ grid-template-columns:repeat(2,1fr); }
+    .navlinks{ display:none; }
+    .navctas{ display:none; }
+    .navmenu-toggle{ display:flex; }
+    section{ padding:72px 0; }
+  }
+  @media (max-width:520px){
+    .wrap{ padding:0 20px; }
+    .footer-grid{ grid-template-columns:1fr 1fr; }
+    .team-benefits{ grid-template-columns:1fr; }
+  }
+
+  /* ===== Inner page hero ===== */
+  .page-hero{ padding:64px 0 56px; border-bottom:1px solid var(--line); }
+  .page-hero .eyebrow{ margin-bottom:14px; }
+  .page-hero h1{ font-size:clamp(34px,5vw,58px); margin-bottom:16px; }
+  .page-hero p{ color:#cfc9c1; font-size:16px; max-width:640px; }
+  .light .page-hero p{ color:var(--ash-dark); }
+
+  /* ===== Compare table ===== */
+  .compare-grid{ display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:20px; }
+  .compare-row{ display:grid; grid-template-columns:220px 1fr; gap:32px; background:var(--void-2); padding:34px 30px; }
+  .compare-row h3{ font-size:20px; text-transform:none; letter-spacing:0; font-weight:700; color:var(--blood-bright); }
+  .compare-row .compare-body p{ color:#cfc9c1; font-size:14.5px; margin-bottom:10px; }
+  .compare-row .compare-body p:last-child{ margin-bottom:0; }
+  .compare-row .compare-body b{ color:var(--white); }
+
+  /* ===== Detail cards (compliance / industries / benefits) ===== */
+  .detail-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line-dark); border:1px solid var(--line-dark); margin-bottom:24px; }
+  .detail-card{ background:var(--paper); padding:32px 30px; transition:transform .3s ease, box-shadow .3s ease; }
+  .detail-card:hover{ transform:translateY(-4px); box-shadow:0 20px 40px -22px rgba(0,0,0,0.3); position:relative; z-index:1; }
+  .detail-card h4{ font-size:19px; text-transform:none; letter-spacing:0; font-weight:700; margin-bottom:10px; color:var(--void); }
+  .detail-card .tag{ font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--maroon-2); margin-bottom:10px; display:block; }
+  .detail-card p{ font-size:14px; color:var(--ash-dark); }
+
+  .industry-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:24px; }
+  .industry-card{ background:var(--void-2); padding:28px 24px; transition:transform .3s ease, background .3s ease; }
+  .industry-card:hover{ transform:translateY(-4px); background:#1c181b; }
+  .industry-card h4{ font-size:17px; text-transform:none; letter-spacing:0; font-weight:700; margin-bottom:8px; color:var(--white); }
+  .industry-card p{ font-size:13.5px; color:var(--ash); }
+
+  .benefit-row{ display:grid; grid-template-columns:0.5fr 1fr; gap:32px; padding:30px 0; border-top:1px solid var(--line); align-items:start; }
+  .benefit-row:last-child{ border-bottom:1px solid var(--line); }
+  .benefit-row h3{ font-size:22px; text-transform:none; letter-spacing:0; font-weight:700; color:var(--white); }
+  .benefit-row p{ color:#cfc9c1; font-size:14.5px; }
+
+  .legal-block{ padding:36px 0; border-top:1px solid var(--line); }
+  .legal-block:first-of-type{ border-top:none; }
+  .legal-block h2{ font-size:26px; margin-bottom:14px; }
+  .legal-block p{ color:#cfc9c1; font-size:14.5px; margin-bottom:12px; max-width:760px; }
+
+  @media (max-width:900px){
+    .compare-row{ grid-template-columns:1fr; gap:12px; }
+    .detail-grid{ grid-template-columns:1fr; }
+    .industry-grid{ grid-template-columns:1fr 1fr; }
+    .benefit-row{ grid-template-columns:1fr; gap:10px; }
+  }
+  @media (max-width:520px){
+    .industry-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<div class="announce">
+  <b>Nexra Security Pvt Ltd</b> <span class="dot">·</span> India's first end-to-end AI cybersecurity platform <span class="dot">·</span> DPDP &amp; CERT-In aware <span class="dot">·</span> Free scan available
+</div>
+
+<header>
+  <nav class="nav">
+    <a href="index.html" class="logo"><span class="mark"></span>Nexra Security</a>
+    <div class="navlinks">
+      <a href="index.html#pillars">Platform</a>
+      <a href="index.html#solutions">Solutions</a>
+      <a href="benefits.html">Benefits</a>
+      <a href="compliance.html">Compliance</a>
+      <a href="industries.html">Industries</a>
+      <a href="compare.html">Compare</a>
+      <a href="about.html">Company</a>
+    </div>
+    <div class="navctas">
+      <a href="index.html#scan" class="btn btn-ghost">Start Free Scan</a>
+      <a href="index.html#demo" class="btn btn-primary">Book Demo</a>
+    </div>
+    <button class="navmenu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="mobile-panel" id="mobilePanel">
+    <div class="mobile-panel-inner">
+      <a class="mp-link" href="index.html#pillars">Platform</a>
+      <a class="mp-link" href="index.html#solutions">Solutions</a>
+      <a class="mp-link" href="benefits.html">Benefits</a>
+      <a class="mp-link" href="compliance.html">Compliance</a>
+      <a class="mp-link" href="industries.html">Industries</a>
+      <a class="mp-link" href="compare.html">Compare</a>
+      <a class="mp-link" href="about.html">Company</a>
+      <div class="mp-ctas">
+        <a href="index.html#scan" class="btn btn-ghost">Start Free Scan</a>
+        <a href="index.html#demo" class="btn btn-primary">Book Demo</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<section class="page-hero wrap">
+  <div class="eyebrow">Company</div>
+  <h1>About Nexra Security Pvt Ltd</h1>
+  <p>Nexra Security Pvt Ltd builds India's first end-to-end AI cybersecurity platform — combining verified AI, real scanners, no-code automation, and certified experts in one subscription, so private-sector businesses don't have to choose between expensive global tools, slow consulting, and unreliable generic AI.</p>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Our approach</div>
+      <h2>Software Plus People</h2>
+      <p class="ash-text">We don't believe security should be either "just a tool" or "just a consultant." Nexra Security Pvt Ltd is built as an integrated platform — AI assistant, real scanners, automation workflows, and certified human experts working together, so paid customers get the benefits of a security department without building one from scratch.</p>
+    </div>
+  </div>
+</section>
+
+<section id="trust" class="wrap">
+  <div class="sec-head reveal">
+    <div class="eyebrow">Trust &amp; proof</div>
+    <h2>Built to Earn Trust</h2>
+    <p>Nexra Security Pvt Ltd presents trust through certifications, compliance alignment, audit-ready outputs, and real customer results.</p>
+  </div>
+  <div class="trust-row reveal">
+    <span class="trust-badge">CERT-In aligned</span>
+    <span class="trust-badge">DPDP aware</span>
+    <span class="trust-badge">Certified consultants</span>
+    <span class="trust-badge">Data residency statement</span>
+    <span class="trust-badge">99% uptime SLA</span>
+    <span class="trust-badge">Report samples on request</span>
+    <span class="trust-badge">INR billing</span>
+  </div>
+</section>
+
+<section id="security" class="light">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Security</div>
+      <h2>How We Handle Your Data</h2>
+      <p class="ash-text">Scan results, findings, and reports are treated as confidential customer data. Access is limited to your team and, where you opt in, the certified consultant assigned to your account. For details on data handling, retention, and processing, see our <a href="legal.html#data-processing" style="color:var(--maroon-2); text-decoration:underline;">Data Processing page</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section id="careers" class="wrap">
+  <div class="sec-head reveal">
+    <div class="eyebrow">Careers</div>
+    <h2>Work With Us</h2>
+    <p>Nexra Security Pvt Ltd is growing its team of engineers, security researchers, and CEH / OSCP-certified consultants. If you want to help build India's compliance-first security platform, reach out via the contact details below.</p>
+  </div>
+</section>
+
+<section id="faqs" class="light">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">FAQs</div>
+      <h2>Common Questions</h2>
+    </div>
+    <div class="legal-block reveal">
+      <h2 style="font-size:19px;">Is the free scan really free?</h2>
+      <p class="ash-text">Yes — no credit card is required to run your first scan and see your attack surface and findings summary.</p>
+    </div>
+    <div class="legal-block reveal">
+      <h2 style="font-size:19px;">Do I need to buy separate tools alongside Nexra?</h2>
+      <p class="ash-text">No. Nexra Security Pvt Ltd is built to replace fragmented tools with one integrated platform across AI guidance, scanning, automation, and human experts.</p>
+    </div>
+    <div class="legal-block reveal">
+      <h2 style="font-size:19px;">Are certified consultants included?</h2>
+      <p class="ash-text">Certified security consultants are included in paid plans, supporting scan reviews, findings walkthroughs, and compliance reporting.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="wrap">
+  <div class="sec-head reveal">
+    <div class="eyebrow">Contact</div>
+    <h2>Talk to Our Team</h2>
+    <p>Have a question about a scan, a plan, or compliance support? Reach out and the Nexra Security Pvt Ltd team will get back to you.</p>
+  </div>
+  <div class="hero-ctas reveal">
+    <a href="index.html#scan" class="btn btn-primary">Start Free Scan</a>
+    <a href="#" class="btn btn-ghost">Book Live Demo</a>
+    <a href="#" class="btn btn-line">Talk to Us on WhatsApp →</a>
+  </div>
+</section>
+
+
+<section id="scan" class="cta-banner">
+  <div id="demo"></div>
+  <div class="cta-inner">
+    <h2>Let's Secure Your Business</h2>
+    <p>Run a free scan or talk to the Nexra Security Pvt Ltd team about your compliance and security needs.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn btn-primary">Start Free Scan</a>
+      <a href="about.html#contact" class="btn btn-ghost">Book Live Demo</a>
+      <a href="about.html#contact" class="btn btn-ghost">Talk to Us on WhatsApp</a>
+    </div>
+    <p class="cta-fine">No credit card needed for free scan access.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><span class="mark"></span>Nexra Security</div>
+        <p>India's first end-to-end AI cybersecurity platform, built and operated by Nexra Security Pvt Ltd for private-sector security, compliance, and response.</p>
+      </div>
+      <div class="fcol"><h5>Product</h5><ul>
+        <li><a href="index.html#pillars">AI Platform</a></li>
+        <li><a href="index.html#pillars">Automation</a></li>
+        <li><a href="index.html#team">Team</a></li>
+        <li><a href="benefits.html">What You Get</a></li>
+      </ul></div>
+      <div class="fcol"><h5>Solutions</h5><ul>
+        <li><a href="index.html#platform">Web Security</a></li>
+        <li><a href="compliance.html">Compliance</a></li>
+        <li><a href="index.html#platform">DevSecOps</a></li>
+        <li><a href="index.html#platform">Incident Response</a></li>
+      </ul></div>
+      <div class="fcol"><h5>Industries</h5><ul>
+        <li><a href="industries.html">BFSI</a></li>
+        <li><a href="industries.html">Fintech</a></li>
+        <li><a href="industries.html">Healthcare</a></li>
+        <li><a href="industries.html">SaaS</a></li>
+        <li><a href="industries.html">All industries</a></li>
+      </ul></div>
+      <div class="fcol"><h5>Resources</h5><ul>
+        <li><a href="compare.html">How Nexra Compares</a></li>
+        <li><a href="benefits.html">What You Get</a></li>
+        <li><a href="about.html#trust">Report samples</a></li>
+        <li><a href="about.html#faqs">FAQs</a></li>
+      </ul></div>
+      <div class="fcol"><h5>Company</h5><ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="about.html#contact">Contact</a></li>
+        <li><a href="about.html#careers">Careers</a></li>
+        <li><a href="about.html#security">Security</a></li>
+      </ul></div>
+      <div class="fcol"><h5>Legal</h5><ul>
+        <li><a href="legal.html#privacy">Privacy Policy</a></li>
+        <li><a href="legal.html#terms">Terms</a></li>
+        <li><a href="legal.html#data-processing">Data Processing</a></li>
+        <li><a href="legal.html#disclosures">Compliance Disclosures</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Nexra Security Pvt Ltd. All rights reserved.</span>
+      <span>Registered in India · Built for Indian businesses</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const progressBar = document.getElementById('scrollProgress');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progressBar.style.width = (isFinite(scrolled) ? scrolled : 0) + '%';
+  }
+  document.addEventListener('scroll', updateProgress, { passive:true });
+  updateProgress();
+
+  const menuToggle = document.getElementById('menuToggle');
+  const mobilePanel = document.getElementById('mobilePanel');
+  menuToggle.addEventListener('click', () => {
+    const open = menuToggle.classList.toggle('open');
+    mobilePanel.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', open);
+  });
+  document.querySelectorAll('.mp-link, .mobile-panel .btn').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      menuToggle.classList.remove('open');
+      mobilePanel.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded','false');
+    });
+  });
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
