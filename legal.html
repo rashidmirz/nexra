@@ -404,7 +404,7 @@
 
 <header>
   <nav class="nav">
-    <a href="index.html" class="logo"><span class="mark"></span>Nexra Security</a>
+    <a href="index.html" class="logo"><span class="mark"></span>Nexra Security Pvt Ltd</a>
     <div class="navlinks">
       <a href="index.html#pillars">Platform</a>
       <a href="index.html#solutions">Solutions</a>
@@ -415,8 +415,8 @@
       <a href="about.html">Company</a>
     </div>
     <div class="navctas">
-      <a href="about.html#contact" class="btn btn-ghost">Contact Sales</a>
-      <a href="index.html#demo" class="btn btn-primary">Book a Demo</a>
+      <a href="https://wa.me/916355955827" class="btn btn-ghost">Contact Sales</a>
+      <a href="mailto:nexrasecurity@gmail.com?subject=Book%20a%20Demo" class="btn btn-primary">Book a Demo</a>
     </div>
     <button class="navmenu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -432,8 +432,8 @@
       <a class="mp-link" href="compare.html">Compare</a>
       <a class="mp-link" href="about.html">Company</a>
       <div class="mp-ctas">
-        <a href="about.html#contact" class="btn btn-ghost">Contact Sales</a>
-        <a href="index.html#demo" class="btn btn-primary">Book a Demo</a>
+        <a href="https://wa.me/916355955827" class="btn btn-ghost">Contact Sales</a>
+        <a href="mailto:nexrasecurity@gmail.com?subject=Book%20a%20Demo" class="btn btn-primary">Book a Demo</a>
       </div>
     </div>
   </div>
@@ -472,9 +472,9 @@
     <h2>Questions About Our Policies?</h2>
     <p>Reach out to the Nexra Security Pvt Ltd team for anything not covered here.</p>
     <div class="cta-btns">
-      <a href="about.html#contact" class="btn btn-primary">Contact Sales</a>
-      <a href="index.html#demo" class="btn btn-ghost">Book a Demo</a>
-      <a href="about.html#contact" class="btn btn-ghost">Talk to Our Team</a>
+      <a href="https://wa.me/916355955827" class="btn btn-primary">Contact Sales</a>
+      <a href="mailto:nexrasecurity@gmail.com?subject=Book%20a%20Demo" class="btn btn-ghost">Book a Demo</a>
+      <a href="https://wa.me/916355955827" class="btn btn-ghost">WhatsApp Sales</a>
     </div>
     <p class="cta-fine">Professional guidance for your business.</p>
   </div>
@@ -484,8 +484,9 @@
   <div class="wrap">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="logo"><span class="mark"></span>Nexra Security</div>
+        <div class="logo"><span class="mark"></span>Nexra Security Pvt Ltd</div>
         <p>India's first end-to-end AI cybersecurity platform, built and operated by Nexra Security Pvt Ltd for private-sector security, compliance, and response.</p>
+        <p style="margin-top:12px;"><strong>Contact:</strong><br><a href="https://wa.me/916355955827" style="color:var(--blood-bright); text-decoration:underline;">+91 6355955827</a><br><a href="mailto:nexrasecurity@gmail.com" style="color:var(--blood-bright); text-decoration:underline;">nexrasecurity@gmail.com</a></p>
       </div>
       <div class="fcol"><h5>Product</h5><ul>
         <li><a href="index.html#pillars">AI Platform</a></li>
@@ -533,10 +534,11 @@
 </footer>
 
 <script>
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const progressBar = document.getElementById('scrollProgress');
   function updateProgress(){
+    if (!progressBar) return;
     const h = document.documentElement;
     const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
     progressBar.style.width = (isFinite(scrolled) ? scrolled : 0) + '%';
@@ -546,23 +548,30 @@
 
   const menuToggle = document.getElementById('menuToggle');
   const mobilePanel = document.getElementById('mobilePanel');
-  menuToggle.addEventListener('click', () => {
-    const open = menuToggle.classList.toggle('open');
-    mobilePanel.classList.toggle('open');
-    menuToggle.setAttribute('aria-expanded', open);
-  });
-  document.querySelectorAll('.mp-link, .mobile-panel .btn').forEach(el=>{
-    el.addEventListener('click', ()=>{
-      menuToggle.classList.remove('open');
-      mobilePanel.classList.remove('open');
-      menuToggle.setAttribute('aria-expanded','false');
+  if (menuToggle && mobilePanel) {
+    menuToggle.addEventListener('click', () => {
+      const open = menuToggle.classList.toggle('open');
+      mobilePanel.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', open);
     });
-  });
+    document.querySelectorAll('.mp-link, .mobile-panel .btn').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        menuToggle.classList.remove('open');
+        mobilePanel.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded','false');
+      });
+    });
+  }
 
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  const revealEls = document.querySelectorAll('.reveal');
+  if (typeof IntersectionObserver !== 'undefined' && revealEls.length) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('in'));
+  }
 </script>
 
 </body>

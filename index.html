@@ -356,7 +356,7 @@
 
 <header>
   <nav class="nav">
-    <div class="logo"><span class="mark"></span>Nexra Security</div>
+    <div class="logo"><span class="mark"></span>Nexra Security Pvt Ltd</div>
     <div class="navlinks">
       <a href="#pillars">Platform</a>
       <a href="#solutions">Solutions</a>
@@ -367,8 +367,8 @@
       <a href="about.html">Company</a>
     </div>
     <div class="navctas">
-      <a href="#contact" class="btn btn-ghost">Contact Sales</a>
-      <a href="#demo" class="btn btn-primary">Book a Demo</a>
+      <a href="https://wa.me/916355955827" class="btn btn-ghost">Contact Sales</a>
+      <a href="mailto:nexrasecurity@gmail.com?subject=Book%20a%20Demo" class="btn btn-primary">Book a Demo</a>
     </div>
     <button class="navmenu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -384,8 +384,8 @@
       <a class="mp-link" href="compare.html">Compare</a>
       <a class="mp-link" href="about.html">Company</a>
       <div class="mp-ctas">
-        <a href="#contact" class="btn btn-ghost">Contact Sales</a>
-        <a href="#demo" class="btn btn-primary">Book a Demo</a>
+        <a href="https://wa.me/916355955827" class="btn btn-ghost">Contact Sales</a>
+        <a href="mailto:nexrasecurity@gmail.com?subject=Book%20a%20Demo" class="btn btn-primary">Book a Demo</a>
       </div>
     </div>
   </div>
@@ -408,9 +408,9 @@
         <li class="hload">Private-sector security workflows for DPDP, PCI‑DSS, ISO 27001, and SOC 2</li>
       </ul>
       <div class="hero-ctas hload">
-        <a href="#contact" class="btn btn-primary">Contact Sales</a>
-        <a href="#demo" class="btn btn-ghost">Book a Demo</a>
-        <a href="#whatsapp" class="btn btn-line">Talk to Our Team →</a>
+        <a href="https://wa.me/916355955827" class="btn btn-primary">Contact Sales</a>
+        <a href="mailto:nexrasecurity@gmail.com?subject=Book%20a%20Demo" class="btn btn-ghost">Book a Demo</a>
+        <a href="https://wa.me/916355955827" class="btn btn-line">WhatsApp Sales →</a>
       </div>
       <p class="trustline hload">Trusted by Indian startups, SMBs, and enterprise teams · DPDP aware · Zero‑hallucination AI · INR billing</p>
     </div>
@@ -658,9 +658,9 @@
     <h2>Run Your First Scan Free</h2>
     <p>See your attack surface, security findings, and readiness gaps in one place. Contact our team for a tailored demo and proposal.</p>
     <div class="cta-btns">
-      <a href="#contact" class="btn btn-primary">Contact Sales</a>
-      <a href="#demo" class="btn btn-ghost">Book a Demo</a>
-      <a href="#whatsapp" class="btn btn-ghost">Talk to Our Team</a>
+      <a href="https://wa.me/916355955827" class="btn btn-primary">Contact Sales</a>
+      <a href="mailto:nexrasecurity@gmail.com?subject=Book%20a%20Demo" class="btn btn-ghost">Book a Demo</a>
+      <a href="https://wa.me/916355955827" class="btn btn-ghost">WhatsApp Sales</a>
     </div>
     <p class="cta-fine">Professional security guidance for your business.</p>
   </div>
@@ -670,8 +670,9 @@
   <div class="wrap">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="logo"><span class="mark"></span>Nexra Security</div>
-        <p>India's first end‑to‑end AI cybersecurity platform, built and operated by Nexra Security Pvt Ltd for private‑sector security, compliance, and response.</p>
+        <div class="logo"><span class="mark"></span>Nexra Security Pvt Ltd</div>
+        <p>India's first end-to-end AI cybersecurity platform, built and operated by Nexra Security Pvt Ltd for private-sector security, compliance, and response.</p>
+        <p style="margin-top:12px;"><strong>Contact:</strong><br><a href="https://wa.me/916355955827" style="color:var(--blood-bright); text-decoration:underline;">+91 6355955827</a><br><a href="mailto:nexrasecurity@gmail.com" style="color:var(--blood-bright); text-decoration:underline;">nexrasecurity@gmail.com</a></p>
       </div>
       <div class="fcol"><h5>Product</h5><ul><li><a href="#pillars">AI Platform</a></li><li><a href="#pillars">Automation</a></li><li><a href="#team">Team</a></li><li><a href="benefits.html">What You Get</a></li></ul></div>
       <div class="fcol"><h5>Solutions</h5><ul><li><a href="#platform">Web Security</a></li><li><a href="compliance.html">Compliance</a></li><li><a href="#platform">DevSecOps</a></li><li><a href="#platform">Incident Response</a></li></ul></div>
@@ -688,11 +689,12 @@
 </footer>
 
 <script>
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---- Scroll progress bar ---- */
   const progressBar = document.getElementById('scrollProgress');
   function updateProgress(){
+    if (!progressBar) return;
     const h = document.documentElement;
     const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
     progressBar.style.width = (isFinite(scrolled) ? scrolled : 0) + '%';
@@ -703,18 +705,20 @@
   /* ---- Mobile menu ---- */
   const menuToggle = document.getElementById('menuToggle');
   const mobilePanel = document.getElementById('mobilePanel');
-  menuToggle.addEventListener('click', () => {
-    const open = menuToggle.classList.toggle('open');
-    mobilePanel.classList.toggle('open');
-    menuToggle.setAttribute('aria-expanded', open);
-  });
-  document.querySelectorAll('.mp-link, .mobile-panel .btn').forEach(el=>{
-    el.addEventListener('click', ()=>{
-      menuToggle.classList.remove('open');
-      mobilePanel.classList.remove('open');
-      menuToggle.setAttribute('aria-expanded','false');
+  if (menuToggle && mobilePanel) {
+    menuToggle.addEventListener('click', () => {
+      const open = menuToggle.classList.toggle('open');
+      mobilePanel.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', open);
     });
-  });
+    document.querySelectorAll('.mp-link, .mobile-panel .btn').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        menuToggle.classList.remove('open');
+        mobilePanel.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded','false');
+      });
+    });
+  }
 
   /* ---- Hero load-in stagger ---- */
   const hloadEls = document.querySelectorAll('.hload');
@@ -725,6 +729,7 @@
 
   /* ---- Text scramble/decrypt effect for headline accent word ---- */
   function scramble(el, duration){
+    if (!el) return;
     const final = el.dataset.final || el.textContent;
     if (reducedMotion) { el.textContent = final; return; }
     const chars = "!<>-_\\/[]{}—=+*^?#$%01";
@@ -744,7 +749,7 @@
     update();
   }
   const scrambleWord = document.getElementById('scrambleWord');
-  setTimeout(() => scramble(scrambleWord, 900), 900);
+  if (scrambleWord) { setTimeout(() => scramble(scrambleWord, 900), 900); }
 
   /* ---- Cursor spotlight in hero ---- */
   const heroEl = document.querySelector('.hero');
@@ -780,6 +785,7 @@
   const termStatus = document.getElementById('termStatus');
   let i = 0;
   function typeNext(){
+    if (!termBody || !termStatus) return;
     if (i >= lines.length){
       const cur = document.createElement('span');
       cur.className = 'term-cursor';
@@ -800,12 +806,14 @@
   /* ---- Industry marquee — build track (duplicated for seamless loop) ---- */
   const industries = ["BFSI","Fintech & Payments","Healthcare & Pharma","IT & SaaS","E‑commerce & Retail","Manufacturing & OT/ICS","Logistics & Supply Chain","Media & OTT","Education & EdTech","Real Estate & PropTech","Hospitality & Travel","Legal Services","Energy & Utilities","Automotive & Mobility"];
   const track = document.getElementById('industryTrack');
-  [...industries, ...industries].forEach(name=>{
-    const pill = document.createElement('span');
-    pill.className = 'ind-pill';
-    pill.textContent = name;
-    track.appendChild(pill);
-  });
+  if (track) {
+    [...industries, ...industries].forEach(name=>{
+      const pill = document.createElement('span');
+      pill.className = 'ind-pill';
+      pill.textContent = name;
+      track.appendChild(pill);
+    });
+  }
 
   /* ---- Count-up stats ---- */
   function countUp(el){
@@ -823,16 +831,26 @@
     }
     requestAnimationFrame(tick);
   }
-  const statObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting){ countUp(e.target); statObserver.unobserve(e.target); } });
-  }, { threshold: 0.5 });
-  document.querySelectorAll('.stat-num').forEach(el => statObserver.observe(el));
+  const statEls = document.querySelectorAll('.stat-num');
+  if (typeof IntersectionObserver !== 'undefined' && statEls.length) {
+    const statObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting){ countUp(e.target); statObserver.unobserve(e.target); } });
+    }, { threshold: 0.5 });
+    statEls.forEach(el => statObserver.observe(el));
+  } else {
+    statEls.forEach(el => { el.textContent = el.dataset.target + (el.dataset.suffix || ''); });
+  }
 
   /* ---- Scroll reveal ---- */
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  const revealEls = document.querySelectorAll('.reveal');
+  if (typeof IntersectionObserver !== 'undefined' && revealEls.length) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('in'));
+  }
 </script>
 
 </body>
